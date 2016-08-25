@@ -24,7 +24,12 @@ func loadDBSData(furl string, data []byte) []Record {
 // DBS helper function to get dataset info from blocksummaries DBS API
 func fileInfo(dataset string, run int, ch chan Record) {
 	api := "files"
-	furl := fmt.Sprintf("%s/%s/?dataset=%s&run_num=%d", dbsUrl(), api, url.QueryEscape(dataset), run)
+	var furl string
+	if run != 0 {
+		furl = fmt.Sprintf("%s/%s/?dataset=%s&run_num=%d", dbsUrl(), api, url.QueryEscape(dataset), run)
+	} else {
+		furl = fmt.Sprintf("%s/%s/?dataset=%s", dbsUrl(), api, url.QueryEscape(dataset))
+	}
 	response := utils.FetchResponse(furl, "")
 	if response.Error == nil {
 		records := loadDBSData(furl, response.Data)
@@ -43,7 +48,12 @@ func fileInfo(dataset string, run int, ch chan Record) {
 // DBS helper function to get dataset info from blocksummaries DBS API
 func listDatasets(dataset string, run int) []Record {
 	api := "datasets"
-	furl := fmt.Sprintf("%s/%s/?dataset=%s&run_num=%d", dbsUrl(), api, dataset, run)
+	var furl string
+	if run != 0 {
+		furl = fmt.Sprintf("%s/%s/?dataset=%s&run_num=%d", dbsUrl(), api, url.QueryEscape(dataset), run)
+	} else {
+		furl = fmt.Sprintf("%s/%s/?dataset=%s", dbsUrl(), api, url.QueryEscape(dataset))
+	}
 	response := utils.FetchResponse(furl, "")
 	if response.Error == nil {
 		records := loadDBSData(furl, response.Data)

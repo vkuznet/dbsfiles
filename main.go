@@ -15,6 +15,8 @@ func main() {
 	//     flag.StringVar(&trange, "trange", "1d", "Specify time interval in YYYYMMDD format, e.g 20150101-20150201 or use short notations 1d, 1m, 1y for one day, month, year, respectively")
 	var run int
 	flag.IntVar(&run, "run", 0, "run number")
+	var numFiles int
+	flag.IntVar(&numFiles, "numFiles", 10, "show first #files")
 	var chunkSize int
 	flag.IntVar(&chunkSize, "chunkSize", 100, "chunkSize for processing URLs")
 	var verbose int
@@ -25,5 +27,5 @@ func main() {
 	utils.VERBOSE = verbose
 	utils.PROFILE = profile
 	utils.CHUNKSIZE = chunkSize
-	cms.Process(dataset, run)
+	cms.Process(dataset, run, numFiles)
 }
