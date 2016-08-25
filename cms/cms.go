@@ -19,7 +19,7 @@ func dbsUrl() string {
 type Record map[string]interface{}
 
 // exported function which process user request
-func Process(dataset string, run, numFiles int) {
+func Process(dataset string, run int) {
 	startTime := time.Now()
 	utils.TestEnv()
 	datasets := listDatasets(dataset, run)
@@ -31,8 +31,7 @@ func Process(dataset string, run, numFiles int) {
 		dataset := rec["dataset"].(string)
 		go fileInfo(dataset, run, ch)
 	}
-	// collect results
-	var out []Record
+	// collect and print results
 	count := 0
 	for {
 		select {
@@ -40,7 +39,7 @@ func Process(dataset string, run, numFiles int) {
 			if _, ok := r["done"]; ok == true { // look-up done record and count
 				count += 1
 			} else {
-				out = append(out, r)
+				fmt.Println(r["logical_file_name"])
 			}
 		default:
 			time.Sleep(time.Duration(10) * time.Millisecond) // wait for response
@@ -49,18 +48,8 @@ func Process(dataset string, run, numFiles int) {
 			break
 		}
 	}
-	for idx, rec := range out {
-		if numFiles > 0 {
-			if idx < numFiles {
-				fmt.Println(rec["logical_file_name"])
-			}
-		} else {
-			fmt.Println(rec["logical_file_name"])
-		}
-	}
 	if utils.PROFILE {
 		fmt.Printf("Processed %d urls\n", utils.UrlCounter)
-		fmt.Printf("Number of files: %d\n", len(out))
 		fmt.Printf("Elapsed time %s\n", time.Since(startTime))
 	}
 }

@@ -10,7 +10,7 @@ import (
 )
 
 // global variable for this module which we're going to use across many modules
-var VERBOSE, CHUNKSIZE int
+var VERBOSE, CHUNKSIZE, NUMFILES int
 var PROFILE bool
 
 // test environment

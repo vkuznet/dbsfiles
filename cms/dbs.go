@@ -36,7 +36,19 @@ func fileInfo(dataset string, run int, ch chan Record) {
 		if utils.VERBOSE > 1 {
 			fmt.Println("furl", furl, records)
 		}
-		for _, rec := range records {
+		if utils.VERBOSE > 0 {
+			nfiles := len(records)
+			if utils.NUMFILES != 0 {
+				nfiles = utils.NUMFILES
+			}
+			fmt.Printf("Total number of files %d, showing %d:\n", len(records), nfiles)
+		}
+		for idx, rec := range records {
+			if utils.NUMFILES != 0 {
+				if idx > utils.NUMFILES {
+					break
+				}
+			}
 			ch <- rec
 		}
 	}

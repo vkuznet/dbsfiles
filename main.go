@@ -27,5 +27,6 @@ func main() {
 	utils.VERBOSE = verbose
 	utils.PROFILE = profile
 	utils.CHUNKSIZE = chunkSize
-	cms.Process(dataset, run, numFiles)
+	utils.NUMFILES = numFiles
+	cms.Process(dataset, run)
 }
